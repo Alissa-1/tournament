@@ -1,105 +1,98 @@
 package ru.netology.domain;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameTest {
-    ArrayList<Player> registeredPlayers = new ArrayList<>();
+    HashMap<String, Integer> registeredPlayers = new HashMap<>();
     Game game = new Game(registeredPlayers);
-
-    Player player1 = new Player(1, "Petya", 10);
-    Player player2 = new Player(2, "Kolya", 3);
-    Player player3 = new Player(3, "Tolya", 5);
-    Player player4 = new Player(4, "Player4", 5);
 
     @Test
     public void shouldRegisterFirstPlayer() {
-        game.register(player1);
+        game.register("Petya", 10);
 
-        ArrayList<Player> expected = new ArrayList<>();
-        expected.add(player1);
+        HashMap<String, Integer> expected = new HashMap<>();
+        expected.put("Petya", 10);
 
-        ArrayList<Player> actual = game.getRegisteredPlayers();
+        HashMap<String, Integer> actual = game.getRegisteredPlayers();
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldRegisterSecondPlayer() {
-        game.register(player1);
-        game.register(player2);
+        game.register("Petya", 10);
+        game.register("Kolya", 3);
 
-        ArrayList<Player> expected = new ArrayList<>();
-        expected.add(player1);
-        expected.add(player2);
+        HashMap<String, Integer> expected = new HashMap<>();
+        expected.put("Petya", 10);
+        expected.put("Kolya", 3);
 
-        ArrayList<Player> actual = game.getRegisteredPlayers();
+        HashMap<String, Integer> actual = game.getRegisteredPlayers();
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldNotRegisterSecondPlayerIfRepeats() {
-        game.register(player1);
-        game.register(player2);
-        game.register(player2);
+        game.register("Petya", 10);
+        game.register("Kolya", 3);
+        game.register("Kolya", 3);
 
-        ArrayList<Player> expected = new ArrayList<>();
-        expected.add(player1);
-        expected.add(player2);
+        HashMap<String, Integer> expected = new HashMap<>();
+        expected.put("Petya", 10);
+        expected.put("Kolya", 3);
 
-        ArrayList<Player> actual = game.getRegisteredPlayers();
+        HashMap<String, Integer> actual = game.getRegisteredPlayers();
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldFindByName() {
-        game.register(player1);
-        game.register(player2);
-        game.register(player3);
+        game.register("Petya", 10);
+        game.register("Kolya", 3);
+        game.register("Tolya", 5);
 
-        Player expected = player3;
-        Player actual = game.findByName(player3.name);
+        Integer expected = 5;
+        Integer actual = game.findByName("Tolya");
         assertEquals(expected, actual);
     }
 
     @Test
     public void shouldNotFindByName() {
-        game.register(player1);
-        game.register(player2);
+        game.register("Petya", 10);
+        game.register("Kolya", 3);
 
         Player expected = null;
-        Player actual = game.findByName(player3.name);
+        Integer actual = game.findByName("Tolya");
         assertEquals(expected, actual);
     }
 
     @Test
     public void firstWins() {
-        game.register(player1);
-        game.register(player2);
+        game.register("Petya", 10);
+        game.register("Kolya", 3);
 
         int expected = 1;
-        int actual = game.round(player1.name, player2.name);
+        int actual = game.round("Petya", "Kolya");
         assertEquals(expected, actual);
     }
 
     @Test
     public void secondWins() {
-        game.register(player2);
-        game.register(player3);
+        game.register("Kolya", 3);
+        game.register("Tolya", 5);
 
         int expected = 2;
-        int actual = game.round(player2.name, player3.name);
+        int actual = game.round("Kolya", "Tolya");
         assertEquals(expected, actual);
     }
 
     @Test
     public void equals() {
-        game.register(player3);
-        game.register(player4);
+        game.register("Tolya", 5);
+        game.register("Vasya", 5);
 
         int expected = 0;
-        int actual = game.round(player3.name, player4.name);
+        int actual = game.round("Tolya", "Vasya");
         assertEquals(expected, actual);
     }
 }
