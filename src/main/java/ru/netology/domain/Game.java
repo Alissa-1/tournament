@@ -1,40 +1,37 @@
 package ru.netology.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class Game {
-    private ArrayList<Player> registeredPlayers = new ArrayList<>();
+    private HashMap<String, Integer> registeredPlayers;
 
-    public Game(ArrayList<Player> registeredPlayers) {
+    public Game(HashMap<String, Integer> registeredPlayers) {
         this.registeredPlayers = registeredPlayers;
     }
 
-    public ArrayList<Player> getRegisteredPlayers() {
+    public HashMap<String, Integer> getRegisteredPlayers() {
         return registeredPlayers;
     }
 
-    public void register (Player player) {
-        if (!registeredPlayers.contains(player)) {
-            registeredPlayers.add(player);
+    public void register (String playerName, Integer strength) {
+        if (!registeredPlayers.containsKey(playerName)) {
+            registeredPlayers.put(playerName, strength);
         }
     }
 
-    public Player findByName(String playerName) {
-        for (Player registeredPlayer : registeredPlayers) {
-            if (registeredPlayer.getName().equals(playerName)) {
-                return registeredPlayer;
+    public Integer findByName(String playerName) {
+        for (String name : registeredPlayers.keySet()) {
+            if (name.equals(playerName)) {
+                return registeredPlayers.get(name);
             }
         }
         return null;
     }
 
     public int round(String playerName1, String playerName2) {
-        Player player1 = findByName(playerName1);
-        Player player2 = findByName(playerName2);
-        if (player1.getStrength() > player2.getStrength()) {
+        if (findByName(playerName1) > findByName(playerName2)) {
             return 1;
-        } else if (player1.getStrength() < player2.getStrength()) {
+        };
+        if (findByName(playerName1) < findByName(playerName2)) {
             return 2;
         } else {
             return 0;
