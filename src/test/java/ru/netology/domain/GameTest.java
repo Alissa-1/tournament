@@ -64,6 +64,16 @@ public class GameTest {
     }
 
     @Test
+    public void shouldNotFindByName() {
+        game.register(player1);
+        game.register(player2);
+
+        Player expected = null;
+        Player actual = game.findByName(player3.name);
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void firstWins() {
         game.register(player1);
         game.register(player2);
